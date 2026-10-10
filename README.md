@@ -38,6 +38,17 @@ Ouvrir `index.html` directement dans un navigateur moderne ou servir le dossier 
 
 Pour publier via GitHub Pages : **Settings → Pages → Build and deployment → Deploy from a branch → main → /(root) → Save** (si disponible sur le dépôt).
 
+## Améliorations V0.2
+
+- Couches Routes et Noms activables séparément.
+- Favoris enregistrés dans le navigateur (stockage local).
+- Liens de partage contenant le lieu choisi et le mode de carte.
+- Boutons de recentrage sur Maldak-City, favoris et partage.
+- Centrage corrigé lors de la sélection d'un lieu.
+- Coordonnées de zoom recalculées à partir de la transformation SVG.
+- Recherche rapide avec la touche `/`, légende et retours visuels.
+- Toujours aucune API ou compte requis.
+
 ## Suite envisagée
 
 1. Choisir le référentiel géographique fictif de M7B3 et des unités de distance.
