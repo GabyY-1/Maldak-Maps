@@ -45,6 +45,28 @@ body{background:#dbe9ee}.map{background:#b5dbe9}
 .map[data-terrain=simple] #terrainTexture{display:none}.map[data-parks=off] .forest{display:none}
 .layerPanel{display:none;position:absolute;z-index:9;right:18px;top:18px;width:310px;max-width:calc(100vw - 32px);background:#fff;box-shadow:0 7px 32px #192f4050;border-radius:18px;padding:19px;color:#233545}
 .layerPanel.show{display:block}.layerHeader{display:flex;justify-content:space-between;align-items:center;font-size:22px}.layerHeader button{border:0;background:#eaf0f5;width:36px;height:36px;border-radius:10px;display:grid;place-items:center}.layerHeader svg{width:18px}.layerPanel p{font-size:13px;color:#718096}.layerPanel label{display:flex;gap:12px;align-items:center;padding:14px 5px;border-bottom:1px solid #edf0f3;cursor:pointer;font-size:14px}.layerPanel label input{accent-color:#1a73e8;width:18px;height:18px}.layerPanel small{display:block;color:#687988;line-height:1.5;margin-top:15px}@media(max-width:700px){.layerPanel{right:9px;top:10px}}
+
+/* V0.6 cartographic modes */
+.modePicker{position:absolute;right:18px;bottom:18px;z-index:7;display:flex;align-items:center;gap:5px;padding:7px;border-radius:16px;background:#fff;box-shadow:0 5px 20px #203d4b35;border:1px solid #e1e7ec}
+.modePicker button{border:0;background:transparent;color:#4b5865;border-radius:10px;padding:9px 11px;display:flex;align-items:center;gap:7px;font-weight:650;font-size:12px;cursor:pointer}
+.modePicker button.selected{background:#e8f0fe;color:#155cbd}.modePicker button svg{width:16px;height:16px}
+.modePicker .modeDropdown{display:none;position:absolute;bottom:calc(100% + 9px);right:0;width:268px;background:#fff;border-radius:16px;box-shadow:0 8px 30px #203d4b45;padding:8px;max-height:65vh;overflow:auto}
+.modePicker.open .modeDropdown{display:block}.modeDropdown button{width:100%;justify-content:flex-start;padding:12px}.modeDropdown h3{font-size:12px;color:#7b8591;text-transform:uppercase;margin:8px 12px}
+.map[data-active-mode=routes] .water,.map[data-active-mode=urban] .water,.map[data-active-mode=vegetation] .water,.map[data-active-mode=hydro] .water,.map[data-active-mode=height] .water,.map[data-active-mode=infra] .water,.map[data-active-mode=borders] .water{fill:#142536}
+.map[data-active-mode=routes] .land,.map[data-active-mode=urban] .land,.map[data-active-mode=vegetation] .land,.map[data-active-mode=hydro] .land,.map[data-active-mode=height] .land,.map[data-active-mode=infra] .land,.map[data-active-mode=borders] .land{fill:#263b44;stroke:#627f88}
+.map[data-active-mode=routes] .road,.map[data-active-mode=routes] .minor{stroke:#f9b85c}
+.map[data-active-mode=routes] .motorway{stroke:#f28a28}
+.map[data-active-mode=urban] .urban{fill:#ff6d82;opacity:1}
+.map[data-active-mode=vegetation] .forest{fill:#2de264;opacity:1}
+.map[data-active-mode=hydro] .water{fill:#1660a6}
+.map[data-active-mode=height] .reliefshapes{display:block;stroke:#f8f8f8;opacity:.9}
+.map[data-active-mode=infra] .marker circle{stroke:#31a7f9;fill:#bce5ff}
+.map[data-active-mode=borders] .land{stroke:#f87171;stroke-width:6}
+.map[data-active-mode=routes] #terrainTexture,.map[data-active-mode=urban] #terrainTexture,.map[data-active-mode=vegetation] #terrainTexture,.map[data-active-mode=hydro] #terrainTexture,.map[data-active-mode=height] #terrainTexture,.map[data-active-mode=infra] #terrainTexture,.map[data-active-mode=borders] #terrainTexture{opacity:.13}
+.map[data-active-mode=routes] #richTerrain,.map[data-active-mode=urban] #richTerrain,.map[data-active-mode=vegetation] #richTerrain,.map[data-active-mode=hydro] #richTerrain,.map[data-active-mode=height] #richTerrain,.map[data-active-mode=infra] #richTerrain,.map[data-active-mode=borders] #richTerrain{opacity:0}
+.map[data-active-mode=urban] #cartographicDetails rect{fill:#fb7185;opacity:.9}
+.map[data-active-mode=vegetation] #cartographicDetails rect,.map[data-active-mode=hydro] #cartographicDetails rect{opacity:.1}
+@media(max-width:700px){.modePicker{right:8px;bottom:12px}.modePicker button{padding:8px 9px}.layers{display:none}.modePicker .modeDropdown{width:240px}}
 </style></head><body><main class="app"><section class="map" id="map" data-layer="normal" aria-label="Carte interactive fictive de Maldak">
 <svg id="world" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 830" role="img" aria-label="Archipel fictif Maldak et ses cinq îles">
 <defs><pattern id="waves" width="34" height="34" patternUnits="userSpaceOnUse"><path d="M-5 12 Q8 4 19 12T43 12" stroke="#ffffff" opacity=".17" fill="none"/></pattern><pattern id="blocks" width="26" height="22" patternUnits="userSpaceOnUse"><path d="M0 0H26M0 0V22" stroke="#ded8c7" stroke-width="2" opacity=".7"/></pattern><clipPath id="mainClip"><path d="M420 174 Q490 123 590 131 Q706 106 785 173 L840 244 Q861 309 805 366 Q755 404 776 460 Q802 543 737 615 Q668 648 625 607 Q556 652 499 596 Q445 567 398 496 Q335 443 353 359 Q313 273 381 211Z"/></clipPath></defs>
@@ -72,7 +94,7 @@ body{background:#dbe9ee}.map{background:#b5dbe9}
 <div class="layers" aria-label="Modes de carte"><button data-mode="normal" class="active"><i data-lucide="map"></i> Plan</button><button data-mode="satellite"><i data-lucide="satellite"></i> Satellite*</button><button data-mode="relief"><i data-lucide="mountain"></i> Relief</button></div>
 <div class="info" id="layerNote">Carte conceptuelle · Îles et tracés fictifs, non à l’échelle</div><div class="scale">Échelle illustrative</div><div class="switches"><label><input type="checkbox" id="roadsToggle" checked> Routes</label><label><input type="checkbox" id="labelsToggle" checked> Noms</label></div>
 <div class="toolbelt"><button id="copyLink" title="Copier un lien vers la vue"><i data-lucide="share-2"></i></button><button id="savedPlaces" title="Mes lieux enregistrés"><i data-lucide="star"></i></button><button id="locateCity" title="Retour à Maldak-City"><i data-lucide="map-pin"></i></button></div>
-<div class="mapLegend"><strong>Légende</strong><div><span class="swatch" style="background:#fff0bd"></span>Autoroutes conceptuelles</div><div><span class="swatch" style="background:#fff"></span>Rues provisoires</div><div><span class="swatch" style="background:#8dbb86"></span>Zones végétalisées</div><div><span class="swatch" style="background:#a8d6e8"></span>Océan / baies</div></div><div class="toast" id="toast" role="status"></div><div class="footer">M7B3 · Maldak Maps V0.1 · Données imaginaires</div></section></main>
+<div class="mapLegend"><strong>Légende</strong><div><span class="swatch" style="background:#fff0bd"></span>Autoroutes conceptuelles</div><div><span class="swatch" style="background:#fff"></span>Rues provisoires</div><div><span class="swatch" style="background:#8dbb86"></span>Zones végétalisées</div><div><span class="swatch" style="background:#a8d6e8"></span>Océan / baies</div></div><div class="toast" id="toast" role="status"></div><div class="modePicker" id="modePicker"><button id="openModes" title="Choisir un mode" aria-expanded="false"><i data-lucide="layers"></i> Tous les calques <i data-lucide="chevron-up"></i></button><div class="modeDropdown" id="modeDropdown"><h3>Fonds de carte</h3><div id="baseModeItems"></div><h3>Calques spécialisés</h3><div id="specialModeItems"></div></div></div><div class="footer">M7B3 · Maldak Maps V0.1 · Données imaginaires</div></section></main>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script><script>
 function renderIcons(){if(window.lucide)window.lucide.createIcons()}
 const ns="http://www.w3.org/2000/svg",map=document.getElementById("map"),svg=document.getElementById("world"),places=[
@@ -169,5 +191,29 @@ layerPanel.querySelector("#panelRoads").onchange=e=>{document.getElementById("ro
 layerPanel.querySelector("#panelNames").onchange=e=>{document.getElementById("labelsToggle").checked=e.target.checked;document.getElementById("labelsToggle").dispatchEvent(new Event("change"))};
 layerPanel.querySelector("#panelParks").onchange=e=>map.dataset.parks=e.target.checked?"on":"off";
 
+
+const mapModes=[
+{id:"normal",title:"Plan",icon:"map",group:"base",desc:"Carte générale vectorielle"},
+{id:"satellite",title:"Satellite",icon:"satellite",group:"base",desc:"Terrain fictif texturé"},
+{id:"relief",title:"Relief",icon:"mountain",group:"base",desc:"Relief stylisé"},
+{id:"routes",title:"Réseau routier",icon:"route",group:"special",desc:"Routes et autoroutes"},
+{id:"urban",title:"Zones urbaines",icon:"building-2",group:"special",desc:"Agglomérations et industries"},
+{id:"vegetation",title:"Végétation",icon:"trees",group:"special",desc:"Forêts et espaces naturels"},
+{id:"hydro",title:"Hydrographie",icon:"waves",group:"special",desc:"Mer et voies d'eau"},
+{id:"height",title:"Altitudes",icon:"mountain-snow",group:"special",desc:"Relief en courbes stylisées"},
+{id:"infra",title:"Infrastructures",icon:"plane",group:"special",desc:"Lieux et installations"},
+{id:"borders",title:"Limites",icon:"map-pinned",group:"special",desc:"Contours territoriaux"}
+];
+const picker=document.getElementById("modePicker"),openModes=document.getElementById("openModes");
+function setMapMode(id){const m=mapModes.find(m=>m.id===id);if(!m)return;map.dataset.activeMode=id;
+if(m.group==="base"){const old=document.querySelector('[data-mode="'+id+'"]');if(old)old.click()}else{map.dataset.layer="normal";document.querySelectorAll("[data-mode]").forEach(b=>b.classList.toggle("active",b.dataset.mode==="normal"))}
+document.querySelectorAll(".modeDropdown button").forEach(b=>b.classList.toggle("selected",b.dataset.mapmode===id));
+document.getElementById("layerNote").textContent=m.desc+" · Données de démonstration fictives — non géoréférencées";
+picker.classList.remove("open");openModes.setAttribute("aria-expanded","false")}
+for(const m of mapModes){const b=document.createElement("button");b.dataset.mapmode=m.id;b.innerHTML='<i data-lucide="'+m.icon+'"></i> <span>'+m.title+'</span>';b.title=m.desc;b.onclick=()=>setMapMode(m.id);document.getElementById(m.group==="base"?"baseModeItems":"specialModeItems").appendChild(b)}
+openModes.onclick=()=>{picker.classList.toggle("open");openModes.setAttribute("aria-expanded",String(picker.classList.contains("open")))};
+document.addEventListener("pointerdown",e=>{if(!picker.contains(e.target))picker.classList.remove("open")});
+document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>{map.dataset.activeMode=b.dataset.mode;document.querySelectorAll(".modeDropdown button").forEach(el=>el.classList.toggle("selected",el.dataset.mapmode===b.dataset.mode))}));
+setMapMode(["normal","satellite","relief"].includes(params.get("layer"))?params.get("layer"):"normal");
 renderIcons();
 </script></body></html>
