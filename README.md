@@ -63,6 +63,13 @@ Pour publier via GitHub Pages : **Settings → Pages → Build and deployment �
 - Les détails restent conceptuels, non à l'échelle : aucune photographie satellite réelle de M7B3.
 - Prochaine évolution : géométrie géographique validée, rues réellement connectées et données vectorielles par zoom.
 
+## Terrain et calques V0.5
+
+- Terrain procédural généré dans le navigateur : textures de mer, de forêts, de plaines et de reliefs, inspirées de la lisibilité des cartes détaillées de serveurs de jeux.
+- Nouveau menu **Calques** avec activation du terrain détaillé, des routes, des noms et des espaces naturels.
+- Alternative de carte simplifiée conservée en cas de problème avec le rendu du terrain.
+- Les formes des îles, bâtiments et routes sont encore des propositions : ce n'est **pas** une carte Minecraft importée ni une véritable vue satellite.
+
 ## Suite envisagée
 
 1. Choisir le référentiel géographique fictif de M7B3 et des unités de distance.
