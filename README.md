@@ -49,6 +49,14 @@ Pour publier via GitHub Pages : **Settings → Pages → Build and deployment �
 - Recherche rapide avec la touche `/`, légende et retours visuels.
 - Toujours aucune API ou compte requis.
 
+## Netteté V0.3
+
+- Typographie, contrastes et lisibilité des libellés renforcés.
+- Icônes Lucide et boutons uniformisés.
+- Panneaux, recherche et commandes plus nets sur ordinateur et mobile.
+- Zoom centré plus précisément sur la position du pointeur.
+- Toujours une carte SVG conceptuelle : la V0.3 n'est pas encore une cartographie haute définition du réseau routier.
+
 ## Suite envisagée
 
 1. Choisir le référentiel géographique fictif de M7B3 et des unités de distance.
