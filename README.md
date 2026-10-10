@@ -57,6 +57,12 @@ Pour publier via GitHub Pages : **Settings → Pages → Build and deployment �
 - Zoom centré plus précisément sur la position du pointeur.
 - Toujours une carte SVG conceptuelle : la V0.3 n'est pas encore une cartographie haute définition du réseau routier.
 
+## Cartographie V0.4
+
+- Fond de carte de l'archipel enrichi : reliefs stylisés, parcelles agricoles, textures forestières, voies locales et petits ensembles bâtis.
+- Les détails restent conceptuels, non à l'échelle : aucune photographie satellite réelle de M7B3.
+- Prochaine évolution : géométrie géographique validée, rues réellement connectées et données vectorielles par zoom.
+
 ## Suite envisagée
 
 1. Choisir le référentiel géographique fictif de M7B3 et des unités de distance.
