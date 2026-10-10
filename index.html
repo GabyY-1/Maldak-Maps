@@ -39,6 +39,12 @@ body{background:#dbe9ee}.map{background:#b5dbe9}
 .map{background:#b8dce7}.water{fill:#a8d3e4}.land{fill:#e0e9cb;stroke:#8eaf9b;stroke-width:3;stroke-linejoin:round}.forest{fill:#98c399}.urban{fill:#e8dfca}.map[data-layer=satellite] .land{fill:#9cac87}.map[data-layer=satellite] #richTerrain{filter:saturate(.8) contrast(1.04)}.map[data-layer=satellite] .water{fill:#5b9aad}.map[data-layer=relief] .land{fill:#cddbb4}
 #richTerrain{pointer-events:none}#cartographicDetails{pointer-events:none}.map[data-roads=off] #cartographicDetails path{display:none}.map[data-roads=off] #cartographicDetails rect{opacity:.6}
 #world text{font-family:Inter,system-ui,Arial,sans-serif}.marker circle{filter:drop-shadow(0 1px 1px #0003)}
+
+.map[data-terrain=detailed] .water,.map[data-terrain=detailed] .land,.map[data-terrain=detailed] .forest,.map[data-terrain=detailed] #richTerrain,.map[data-terrain=detailed] .reliefshapes{opacity:0}
+.map[data-terrain=detailed] .urban{opacity:.42}.map[data-terrain=detailed] #cartographicDetails rect{opacity:.58}
+.map[data-terrain=simple] #terrainTexture{display:none}.map[data-parks=off] .forest{display:none}
+.layerPanel{display:none;position:absolute;z-index:9;right:18px;top:18px;width:310px;max-width:calc(100vw - 32px);background:#fff;box-shadow:0 7px 32px #192f4050;border-radius:18px;padding:19px;color:#233545}
+.layerPanel.show{display:block}.layerHeader{display:flex;justify-content:space-between;align-items:center;font-size:22px}.layerHeader button{border:0;background:#eaf0f5;width:36px;height:36px;border-radius:10px;display:grid;place-items:center}.layerHeader svg{width:18px}.layerPanel p{font-size:13px;color:#718096}.layerPanel label{display:flex;gap:12px;align-items:center;padding:14px 5px;border-bottom:1px solid #edf0f3;cursor:pointer;font-size:14px}.layerPanel label input{accent-color:#1a73e8;width:18px;height:18px}.layerPanel small{display:block;color:#687988;line-height:1.5;margin-top:15px}@media(max-width:700px){.layerPanel{right:9px;top:10px}}
 </style></head><body><main class="app"><section class="map" id="map" data-layer="normal" aria-label="Carte interactive fictive de Maldak">
 <svg id="world" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 830" role="img" aria-label="Archipel fictif Maldak et ses cinq îles">
 <defs><pattern id="waves" width="34" height="34" patternUnits="userSpaceOnUse"><path d="M-5 12 Q8 4 19 12T43 12" stroke="#ffffff" opacity=".17" fill="none"/></pattern><pattern id="blocks" width="26" height="22" patternUnits="userSpaceOnUse"><path d="M0 0H26M0 0V22" stroke="#ded8c7" stroke-width="2" opacity=".7"/></pattern><clipPath id="mainClip"><path d="M420 174 Q490 123 590 131 Q706 106 785 173 L840 244 Q861 309 805 366 Q755 404 776 460 Q802 543 737 615 Q668 648 625 607 Q556 652 499 596 Q445 567 398 496 Q335 443 353 359 Q313 273 381 211Z"/></clipPath></defs>
@@ -119,5 +125,49 @@ document.getElementById("copyLink").onclick=async()=>{const url=shareUrl();try{a
 const previousSelect=select;select=function(id){previousSelect(id);syncFavorite();try{const u=new URL(location.href);u.searchParams.set("place",id);history.replaceState(null,"",u)}catch{}};
 const params=new URL(location.href).searchParams;const startLayer=params.get("layer");if(["normal","satellite","relief"].includes(startLayer)){document.querySelector('[data-mode="'+startLayer+'"]').click()}const startPlace=params.get("place");if(startPlace&&places.some(p=>p.id===startPlace)){select(startPlace)}
 document.addEventListener("keydown",e=>{if(e.key==="/"&&e.target.tagName!=="INPUT"){e.preventDefault();search.focus()}});
+
+/* V0.5: procedural terrain inspired by detailed game-server map cartography */
+function hash2(x,y){let h=Math.imul(x,374761393)+Math.imul(y,668265263);h=Math.imul(h^(h>>>13),1274126177);return ((h^(h>>>16))>>>0)/4294967295}
+function noise2(x,y){let a=Math.floor(x),b=Math.floor(y),u=x-a,v=y-b;u=u*u*(3-2*u);v=v*v*(3-2*v);const p=(i,j)=>hash2(i,j);return(p(a,b)*(1-u)+p(a+1,b)*u)*(1-v)+(p(a,b+1)*(1-u)+p(a+1,b+1)*u)*v}
+function terrainValue(x,y){return .48*noise2(x/125,y/125)+.27*noise2(x/46,y/46)+.16*noise2(x/17,y/17)+.09*noise2(x/5,y/5)}
+function generateTerrain(){
+const w=1200,h=830,mask=document.createElement("canvas");mask.width=w;mask.height=h;
+const mc=mask.getContext("2d",{willReadFrequently:true});
+const shapes=[
+"M420 174 Q490 123 590 131 Q706 106 785 173 L840 244 Q861 309 805 366 Q755 404 776 460 Q802 543 737 615 Q668 648 625 607 Q556 652 499 596 Q445 567 398 496 Q335 443 353 359 Q313 273 381 211Z",
+"M123 261 Q185 173 286 197 Q336 243 309 322 L287 450 Q220 515 155 466 Q92 420 85 346Z",
+"M432 687 Q501 634 575 686 Q619 726 582 791 L478 817 Q402 786 432 687Z",
+"M890 279 Q956 235 1040 275 Q1123 326 1081 412 Q1030 452 963 438 Q890 409 867 353Z",
+"M580 25 Q627 4 695 38 Q739 79 690 105 Q623 117 570 81Z"
+];mc.fillStyle="#fff";for(const shape of shapes)mc.fill(new Path2D(shape));
+const land=mc.getImageData(0,0,w,h).data,canvas=document.createElement("canvas");canvas.width=w;canvas.height=h;const ctx=canvas.getContext("2d"),img=ctx.createImageData(w,h),d=img.data;
+for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+const i=(y*w+x)*4,isLand=land[i+3]>100,n=terrainValue(x,y),detail=noise2(x/3.7,y/3.7),jitter=(hash2(x,y)-.5)*12;let r,g,b;
+if(!isLand){const depth=noise2(x/94,y/94),n2=noise2(x/17,y/17);r=30+depth*13+n2*5;g=91+depth*34+n2*5;b=139+depth*38+n2*7}
+else if(n>.61){r=137+(n-.61)*190;g=139+(n-.61)*160;b=130+(n-.61)*145}
+else if(n>.54){r=92+(n-.54)*470;g=119+(n-.54)*310;b=84+(n-.54)*365}
+else if(n>.45){r=41+(n-.45)*310;g=93+(n-.45)*280;b=46+(n-.45)*270}
+else{r=67+(n-.35)*170;g=126+(n-.35)*210;b=59+(n-.35)*160}
+if(isLand&&detail>.72){r+=12;g+=12;b+=7}
+d[i]=Math.max(0,Math.min(255,r+jitter));d[i+1]=Math.max(0,Math.min(255,g+jitter));d[i+2]=Math.max(0,Math.min(255,b+jitter));d[i+3]=255
+}
+ctx.putImageData(img,0,0);
+const texture=document.createElementNS(ns,"image");texture.setAttribute("id","terrainTexture");texture.setAttribute("x","0");texture.setAttribute("y","0");texture.setAttribute("width",w);texture.setAttribute("height",h);texture.setAttribute("preserveAspectRatio","none");texture.setAttribute("href",canvas.toDataURL("image/png"));
+const firstLand=svg.querySelector(".land");firstLand.parentNode.insertBefore(texture,firstLand);
+map.dataset.terrain="detailed";
+}
+try{generateTerrain()}catch(err){console.warn("Terrain détaillé indisponible, affichage vectoriel conservé",err)}
+const layerPanel=document.createElement("div");layerPanel.id="layerPanel";layerPanel.className="layerPanel";
+layerPanel.innerHTML='<div class="layerHeader"><strong>Calques</strong><button id="closeLayers" aria-label="Fermer les calques"><i data-lucide="x"></i></button></div><p>Affichage de la carte de Maldak</p><label><input type="checkbox" id="terrainToggle" checked> <span>Terrain détaillé</span></label><label><input type="checkbox" id="panelRoads" checked> <span>Réseau routier</span></label><label><input type="checkbox" id="panelNames" checked> <span>Noms et points d’intérêt</span></label><label><input type="checkbox" id="panelParks" checked> <span>Espaces naturels</span></label><small>Textures fictives générées localement · aucune imagerie Google ou Minecraft.</small>';
+map.appendChild(layerPanel);
+const layersButton=document.createElement("button");layersButton.id="layersOpen";layersButton.setAttribute("title","Gérer les calques");layersButton.setAttribute("aria-label","Gérer les calques");layersButton.innerHTML='<i data-lucide="layers-3"></i>';
+document.querySelector(".toolbelt").prepend(layersButton);
+layersButton.onclick=()=>{layerPanel.classList.toggle("show");renderIcons()};
+layerPanel.querySelector("#closeLayers").onclick=()=>layerPanel.classList.remove("show");
+layerPanel.querySelector("#terrainToggle").onchange=e=>{map.dataset.terrain=e.target.checked?"detailed":"simple";document.getElementById("layerNote").textContent=e.target.checked?"Terrain fictif détaillé · vue inspirée des cartes de jeux":"Plan conceptuel simplifié"};
+layerPanel.querySelector("#panelRoads").onchange=e=>{document.getElementById("roadsToggle").checked=e.target.checked;document.getElementById("roadsToggle").dispatchEvent(new Event("change"))};
+layerPanel.querySelector("#panelNames").onchange=e=>{document.getElementById("labelsToggle").checked=e.target.checked;document.getElementById("labelsToggle").dispatchEvent(new Event("change"))};
+layerPanel.querySelector("#panelParks").onchange=e=>map.dataset.parks=e.target.checked?"on":"off";
+
 renderIcons();
 </script></body></html>
