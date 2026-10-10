@@ -70,6 +70,12 @@ Pour publier via GitHub Pages : **Settings → Pages → Build and deployment �
 - Alternative de carte simplifiée conservée en cas de problème avec le rendu du terrain.
 - Les formes des îles, bâtiments et routes sont encore des propositions : ce n'est **pas** une carte Minecraft importée ni une véritable vue satellite.
 
+## Modes cartographiques V0.6
+
+Dix modes sélectionnables dans l'interface : Plan, Satellite, Relief, Routes, Zones urbaines, Végétation, Hydrographie, Altitudes, Infrastructures et Limites.
+
+**Important :** à ce stade, ces dix choix fonctionnent sur une seule carte SVG de démonstration. Les dix images de référence créées en conversation ne sont **pas encore importées dans le dépôt** : l'intégration de fichiers PNG binaires n'a pas été possible via le connecteur dans cette session. Les vues spécialisées sont des rendus de démonstration, **pas** des calques raster géoréférencés ni un véritable cadastre. Il faudra importer les PNG, les recaler sur un même référentiel, puis remplacer les rendus approximatifs.
+
 ## Suite envisagée
 
 1. Choisir le référentiel géographique fictif de M7B3 et des unités de distance.
