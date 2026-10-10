@@ -10,7 +10,31 @@
 .mapLegend{position:absolute;right:18px;bottom:88px;background:#fffef8ed;padding:10px 13px;border:1px solid #e5ebea;border-radius:12px;z-index:3;color:#42515a;font-size:11px;box-shadow:0 1px 8px #0001;max-width:215px}.mapLegend div{margin-top:5px}.swatch{display:inline-block;vertical-align:middle;width:13px;height:5px;border-radius:3px;margin-right:5px}
 .switches{padding:8px 12px;background:#fff;border-radius:12px;box-shadow:0 1px 8px #0001;display:flex;gap:13px;position:absolute;top:18px;left:480px;z-index:5;font-size:12px;color:#4d5a65}.switches label{white-space:nowrap;display:flex;gap:5px;align-items:center}.switches input{accent-color:#1a73e8}
 @media(max-width:900px){.switches{top:78px;left:18px}}@media(max-width:700px){.switches{top:auto;bottom:74px;left:10px}.toolbelt{top:223px;right:10px}.mapLegend{display:none}.info{bottom:117px;font-size:10px;max-width:240px}.layers{bottom:15px}.toast{bottom:140px}}
-.controlset button,.toolbelt button,.close,.searchBox button{display:flex;align-items:center;justify-content:center}.controlset svg,.toolbelt svg{width:20px;height:20px;stroke-width:2}.close svg,.searchBox button svg{width:17px;height:17px}.layers button{display:flex;gap:6px;align-items:center;justify-content:center}.layers svg{width:16px;height:16px}#favoriteButton svg{width:18px;height:18px}</style></head><body><main class="app"><section class="map" id="map" data-layer="normal" aria-label="Carte interactive fictive de Maldak">
+.controlset button,.toolbelt button,.close,.searchBox button{display:flex;align-items:center;justify-content:center}.controlset svg,.toolbelt svg{width:20px;height:20px;stroke-width:2}.close svg,.searchBox button svg{width:17px;height:17px}.layers button{display:flex;gap:6px;align-items:center;justify-content:center}.layers svg{width:16px;height:16px}#favoriteButton svg{width:18px;height:18px}
+/* V0.3 — crisp map UI and clearer visual hierarchy */
+:root{font-synthesis:none;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{background:#dbe9ee}.map{background:#b5dbe9}
+.searchBox{border:1px solid #e9edf0;border-radius:15px;box-shadow:0 4px 18px #182b401a;padding:8px 12px;height:58px}
+.searchBox input{font-size:14px;color:#1f2937}.searchBox input::placeholder{color:#82909e}
+.brand{font-size:19px;font-weight:800;letter-spacing:-.85px}
+.controlset,.toolbelt,.layers,.switches,.panel,.mapLegend,.suggestions{box-shadow:0 5px 20px #233b501b;border:1px solid #e6ebef}
+.controlset button,.toolbelt button{width:46px;height:46px}.controlset button:hover,.toolbelt button:hover,.layers button:hover{background:#f3f7fb}
+.controlset svg,.toolbelt svg{stroke-width:2.15}
+.panel{border-radius:18px;padding:24px}.panel h2{font-size:23px;line-height:1.15;letter-spacing:-.7px}.panel p{line-height:1.65}
+.chip{border-radius:12px;box-shadow:0 3px 12px #233b5015}
+.layers{border-radius:13px;padding:6px;gap:3px}.layers button{min-height:38px;padding:9px 12px}.layers button.active{box-shadow:inset 0 0 0 1px #c5d9fa}
+.primary,.secondary{min-height:40px;transition:background-color .15s}.primary:hover{background:#1456bd}.secondary:hover{background:#e5eaf0}
+.map svg{shape-rendering:geometricPrecision}
+.marker circle{stroke-width:2.6;filter:drop-shadow(0 1px 2px #1f3d5660)}
+.marker text{font-size:12.5px;stroke-width:4px;letter-spacing:-.15px}
+.marker:hover circle,.marker:focus circle{fill:#dbeafe;stroke:#0b57d0;stroke-width:4}
+.marker:focus{outline:none}
+.mapLegend{border-radius:13px;line-height:1.6}
+.info{background:#fffdf9f2;color:#506375;border:1px solid #e3e9ed}
+.switches{border-radius:12px;padding:11px 14px;gap:14px}
+.suggestions button{font-size:13px;font-weight:500}.suggestions button:disabled{color:#7a8996}
+@media(max-width:700px){.searchBox{height:52px;padding:7px 8px}.brand{font-size:16px}.controlset button,.toolbelt button{width:44px;height:44px}.layers{gap:1px}.layers button{font-size:11px;padding:8px 9px}.panel{padding:20px}.switches{padding:8px 11px}}
+</style></head><body><main class="app"><section class="map" id="map" data-layer="normal" aria-label="Carte interactive fictive de Maldak">
 <svg id="world" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 830" role="img" aria-label="Archipel fictif Maldak et ses cinq îles">
 <defs><pattern id="waves" width="34" height="34" patternUnits="userSpaceOnUse"><path d="M-5 12 Q8 4 19 12T43 12" stroke="#ffffff" opacity=".17" fill="none"/></pattern><pattern id="blocks" width="26" height="22" patternUnits="userSpaceOnUse"><path d="M0 0H26M0 0V22" stroke="#ded8c7" stroke-width="2" opacity=".7"/></pattern><clipPath id="mainClip"><path d="M420 174 Q490 123 590 131 Q706 106 785 173 L840 244 Q861 309 805 366 Q755 404 776 460 Q802 543 737 615 Q668 648 625 607 Q556 652 499 596 Q445 567 398 496 Q335 443 353 359 Q313 273 381 211Z"/></clipPath></defs>
 <rect class="water" width="1200" height="830" fill="#a8d6e8"/><rect width="1200" height="830" fill="url(#waves)"/>
@@ -62,7 +86,7 @@ for(let y=364;y<=589;y+=23){svgEl("path",{d:`M473 ${y}H763`,class:"minor"},small
 const mainRoads=["M466 412Q594 399 771 426","M504 343Q596 455 717 586","M542 331Q553 453 532 580","M734 364Q679 476 743 551"];mainRoads.forEach(d=>{svgEl("path",{d,class:"roadedge"},edges);svgEl("path",{d,class:"road"},roads)});
 ["M378 342Q470 290 573 301Q726 254 822 327","M416 472Q492 520 592 542Q713 587 794 484","M574 198Q629 276 677 363"].forEach(d=>{svgEl("path",{d,class:"motorway"},highways);svgEl("path",{d,class:"motorwayInner"},highways)});
 const mg=document.getElementById("markers");places.forEach(p=>{const g=svgEl("g",{class:"marker",tabindex:"0",role:"button","aria-label":p.name,transform:`translate(${p.x} ${p.y})`},mg);svgEl("circle",{r:7},g);let t=svgEl("text",{x:11,y:-9},g);t.textContent=p.name;g.addEventListener("click",()=>select(p.id));g.addEventListener("keydown",e=>{if(e.key==="Enter")select(p.id)})});
-let active=null,view={x:0,y:0,w:1200,h:830},drag=null;function redraw(){svg.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`)}function zoom(factor,cx=view.x+view.w/2,cy=view.y+view.h/2){const w=Math.min(1200,Math.max(95,view.w*factor)),h=w*830/1200;view={x:cx-w/2,y:cy-h/2,w,h};redraw()}function center(x,y,level=390){view={x:x-level/2,y:y-(level*830/1200)/2,w:level,h:level*830/1200};redraw()}function reset(){view={x:0,y:0,w:1200,h:830};redraw();document.getElementById("route").style.display="none";document.getElementById("routeText").style.display="none"}
+let active=null,view={x:0,y:0,w:1200,h:830},drag=null;function redraw(){svg.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`)}function zoom(factor,cx=view.x+view.w/2,cy=view.y+view.h/2){const w=Math.min(1200,Math.max(95,view.w*factor)),h=w*830/1200;view={x:cx-(cx-view.x)*(w/view.w),y:cy-(cy-view.y)*(h/view.h),w,h};redraw()}function center(x,y,level=390){view={x:x-level/2,y:y-(level*830/1200)/2,w:level,h:level*830/1200};redraw()}function reset(){view={x:0,y:0,w:1200,h:830};redraw();document.getElementById("route").style.display="none";document.getElementById("routeText").style.display="none"}
 document.getElementById("zoomIn").onclick=()=>zoom(.7);document.getElementById("zoomOut").onclick=()=>zoom(1.4);document.getElementById("reset").onclick=reset;
 function point(e){const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const m=svg.getScreenCTM();if(!m)return{x:view.x+view.w/2,y:view.y+view.h/2};const q=p.matrixTransform(m.inverse());return{x:q.x,y:q.y}}
 svg.addEventListener("pointerdown",e=>{if(e.target.closest(".marker"))return;drag={clientX:e.clientX,clientY:e.clientY,vx:view.x,vy:view.y};svg.setPointerCapture(e.pointerId)});svg.addEventListener("pointermove",e=>{if(!drag)return;const r=svg.getBoundingClientRect();view.x=drag.vx-(e.clientX-drag.clientX)/r.width*view.w;view.y=drag.vy-(e.clientY-drag.clientY)/r.height*view.h;redraw()});svg.addEventListener("pointerup",()=>drag=null);svg.addEventListener("pointercancel",()=>drag=null);svg.addEventListener("wheel",e=>{e.preventDefault();const p=point(e);zoom(e.deltaY>0?1.12:.88,p.x,p.y)},{passive:false});
